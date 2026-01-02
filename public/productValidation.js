@@ -10,13 +10,13 @@ form.addEventListener("submit", (e) => {
     const price = Number(document.getElementById("price").value);
 
     if (name.length < 2)
-        feedback.textContent = "Name must be at least 2 characters long.";
+        return feedback.textContent = "Name must be at least 2 characters long.";
 
     if (description.length < 5)
-        feedback.textContent = "Description must be at least 5 characters long.";
+        return feedback.textContent = "Description must be at least 5 characters long.";
 
     if (!Number.isFinite(price) || price <= 0)
-        feedback.textContent = "Price must be a number greater than 0.";
+        return feedback.textContent = "Price must be a number greater than 0.";
 
     form.submit();
 });

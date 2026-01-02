@@ -158,14 +158,14 @@ function productValidation(req, res, next) {
     if (!name || name.trim().length < 2) {
         return res.render("error", {
             message: "Product name must be at least 2 characters.",
-            backUrl: "/products/new"
+            backUrl: `/products/${req.params.id}`
         });
     }
 
     if (!description || description.trim().length < 5) {
         return res.render("error", {
             message: "Description must be at least 5 characters.",
-            backUrl: "/products/new"
+            backUrl: `/products/${req.params.id}`
         });
     }
 
@@ -173,7 +173,7 @@ function productValidation(req, res, next) {
     if (!Number.isFinite(p) || p <= 0) {
         return res.render("error", {
             message: "Price must be a number greater than 0.",
-            backUrl: "/products/new"
+            backUrl: `/products/${req.params.id}`
         });
     }
 

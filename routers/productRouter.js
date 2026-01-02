@@ -42,7 +42,7 @@ router.get("/products", authenticate, (req, res) => {
             if (err) return res.send("DB error");
 
             const totalItems = countRows[0].count;
-            const totalPages = Math.ceil(totalItems / pageSize);
+            const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
 
             db.all(
                 "SELECT ID, Name, Price FROM Product LIMIT ? OFFSET ?",

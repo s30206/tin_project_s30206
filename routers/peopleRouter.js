@@ -23,7 +23,7 @@ router.get("/people", authenticate, authEmployee, (req, res) => {
             }
 
             const totalItems = countRows[0].count;
-            const totalPages = Math.ceil(totalItems / pageSize);
+            const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
 
             db.all(
                 `SELECT ID, FirstName, LastName, Email
