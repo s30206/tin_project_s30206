@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add Product</title>
+    <link rel="stylesheet" href="/style.css" type="text/css">
+    <script src="/productValidation.js" async></script>
+</head>
+<body>
+<div class="container">
+    <h2>Add Product</h2>
+
+    <form id="productForm" method="POST" action="/products/new">
+        <input id="name" name="name" placeholder="Name">
+        <input id="description" name="description" placeholder="Description">
+        <input id="price" name="price" placeholder="Price">
+        <div id="productFeedback" class="error"></div>
+        <button type="submit">Add</button>
+    </form>
+
+    <a href="/products">Back</a>
+</div>
+</body>
+</html>

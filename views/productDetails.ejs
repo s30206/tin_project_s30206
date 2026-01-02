@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Product Details</title>
+    <link rel="stylesheet" href="/style.css" type="text/css">
+    <script src="/orderValidation.js" async></script>
+</head>
+<body>
+<div class="container">
+    <h2><%= product.Name %></h2>
+
+    <p><strong>Description:</strong></p>
+    <p><%= product.Description %></p>
+
+    <p><strong>Price:</strong> <%= product.Price %> $</p>
+
+    <% if (user && user.role === "employee") { %>
+        <form method="GET" action="/products/<%= product.ID %>/edit">
+            <button type="submit">Edit product</button>
+        </form>
+    <% } %>
+
+    <% if (user && user.role === "customer") { %>
+        <h3>Order this product</h3>
+
+        <div id="orderFeedback" class="error"></div>
+
+        <form id="orderForm" method="POST" action="/orders/new">
+            <input type="hidden" name="productId" value="<%= product.ID %>">
+
+            <label>Quantity</label>
+            <input type="number" id="quantity" name="quantity" min="1" required>
+
+            <button type="submit">Place order</button>
+        </form>
+    <% } %>
+
+    <a href="/products">Back to products</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,1 @@
+INSERT INTO AccountRole (Name) VALUES ('customer'), ('employee');

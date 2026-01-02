@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Order Details</title>
+    <link rel="stylesheet" href="/style.css" type="text/css">
+</head>
+<body>
+<div class="container">
+    <h2>Order #<%= order.ID %></h2>
+
+    <p><strong>Product:</strong> <%= order.ProductName %></p>
+    <p><strong>Description:</strong> <%= order.Description %></p>
+    <p><strong>Quantity:</strong> <%= order.Quantity %></p>
+    <p><strong>Ordered at:</strong> <%= order.OrderAt %></p>
+
+    <h4>Customer</h4>
+    <p><%= order.FirstName %> <%= order.LastName %></p>
+    <p><%= order.Email %></p>
+
+    <% if (user.role === "customer" || user.role === "employee") { %>
+        <form method="POST" action="/orders/<%= order.ID %>/edit">
+            <label>Quantity</label>
+            <input type="number" name="quantity" min="1" value="<%= order.Quantity %>">
+
+            <button type="submit">Update</button>
+        </form>
+    <% } %>
+
+    <a href="/orders">Back</a>
+</div>
+</body>
+</html>

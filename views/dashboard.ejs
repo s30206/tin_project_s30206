@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/style.css" type="text/css">
+</head>
+<body>
+<div class="container">
+    <h2>Welcome <%= user.username %></h2>
+
+    <form action="/products" method="get">
+        <button type="submit">View all products</button>
+    </form>
+
+    <form action="/orders" method="get">
+        <button type="submit">View orders</button>
+    </form>
+
+    <% if (user.role === "employee") { %>
+        <form action="/people" method="get">
+            <button type="submit">View all people</button>
+        </form>
+    <% } %>
+
+    <form action="/account" method="get">
+        <button type="submit">Manage account</button>
+    </form>
+
+</div>
+</body>
+</html>

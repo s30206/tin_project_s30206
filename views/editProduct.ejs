@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Edit Product</title>
+    <link rel="stylesheet" href="/style.css" type="text/css">
+    <script src="/productValidation.js" async></script>
+</head>
+<body>
+<div class="container">
+    <h2>Edit Product</h2>
+
+    <form id="productForm" method="POST" action="/products/<%= product.ID %>/edit">
+
+        <label>
+            Name
+            <input id="name" type="text" name="name" value="<%= product.Name %>" required>
+        </label>
+
+        <label>
+            <br>Description
+            <input id="description" name="description" required value="<%= product.Description %>">
+        </label>
+
+        <label>
+            <br>Price
+            <input id="price" type="number" step="0.01" name="price" value="<%= product.Price %>" required>
+        </label>
+
+        <div id="productFeedback" class="error"></div>
+
+        <button type="submit">Save changes</button>
+    </form>
+
+    <a href="/products/<%= product.ID %>">Cancel</a>
+</div>
+</body>
+</html>

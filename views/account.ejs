@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Manage Account</title>
+    <link rel="stylesheet" href="/style.css" type="text/css">
+    <script src="/accountValidation.js" async></script>
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete your account?");
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <h2>Account Management</h2>
+
+    <p><strong>ID:</strong> <%= data.ID %></p>
+    <p><strong>Username:</strong> <%= data.Username %></p>
+    <p><strong>Role:</strong> <%= data.Role %></p>
+
+    <h3>Personal Information</h3>
+    <form id="updatePersonForm" method="POST" action="/account/update-person">
+        <input id="firstName" name="firstName" value="<%= data.FirstName %>" placeholder="First name">
+        <input id="lastName" name="lastName" value="<%= data.LastName %>" placeholder="Last name">
+        <input id="email" name="email" value="<%= data.Email %>" placeholder="Email">
+        <input id="phone" name="phone" value="<%= data.Phone %>" placeholder="Phone">
+
+        <button type="submit">Change personal data</button>
+
+        <div id="personFeedback" class="error"></div>
+    </form>
+
+    <h3>Change Password</h3>
+    <form id="changePasswordForm" method="POST" action="/account/change-password">
+        <input id="newPassword" type="password" name="newPassword" placeholder="New password">
+
+        <div id="passwordFeedback" class="error"></div>
+
+        <button type="submit">Change password</button>
+    </form>
+
+    <form method="POST" action="/delete" onsubmit="return confirmDelete()">
+        <button class="deleteButton" type="submit">Delete account</button>
+    </form>
+
+    <a href="/logout">Log out</a>
+    <a href="/dashboard">Return to dashboard</a>
+</div>
+</body>
+</html>

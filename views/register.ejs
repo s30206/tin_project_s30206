@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="/style.css" type="text/css">
+    <script src="/authValidation.js" async></script>
+</head>
+<body>
+<div class="container">
+    <h2>Register</h2>
+
+    <form id="registerForm" method="POST" action="/register">
+        <input id="firstName" name="firstName" placeholder="First Name">
+        <input id="lastName" name="lastName" placeholder="Last Name">
+        <input id="email" name="email" placeholder="Email">
+        <input id="phone" name="phone" placeholder="Phone">
+        <input id="username" name="username" placeholder="Username">
+        <input id="password" type="password" name="password" placeholder="Password">
+
+        <select id="role" name="role">
+            <option value="">Select role</option>
+            <option value="1">Customer</option>
+            <option value="2">Employee</option>
+        </select>
+
+        <button type="submit">Register</button>
+        <div id="formFeedback" class="error"></div>
+    </form>
+
+    <a href="/login">Already have an account?</a>
+</div>
+</body>
+</html>

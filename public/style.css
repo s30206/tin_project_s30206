@@ -1,0 +1,73 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    background-color: #ececec;
+}
+
+.container {
+    width: 400px;
+    margin: 60px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 6px;
+}
+
+h2 {
+    text-align: center;
+}
+
+input, select, button {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+}
+
+button {
+    background-color: #3281ec;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1c60d1;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.deleteButton {
+    background-color: #e30000;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.pagination a,
+.pagination span {
+    display: inline;
+}
+
+.product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.product-item form button {
+    width: auto;
+    padding: 4px 10px;
+}
+
+a {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    text-decoration: none;
+}
