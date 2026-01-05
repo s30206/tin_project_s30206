@@ -11,43 +11,47 @@ router.get("/people", authenticate, authEmployee, (req, res) => {
     const pageSize = 2;
     const offset = (page - 1) * pageSize;
 
-    db.all(
-        "SELECT COUNT(*) AS count FROM Person",
-        [],
-        (err, countRows) => {
-            if (err) {
-                return res.render("error", {
-                    message: "Database error.",
-                    backUrl: "/register"
-                });
-            }
+    db.all("SELECT COUNT(*) AS count FROM Person", [], (err, countRows) => {
+        if (err) {
+            return res.render("error", {
+                message: "Database error.",
+                backUrl: "/register"
+            });
+        }
 
-            const totalItems = countRows[0].count;
-            const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+        const totalItems = countRows[0].count;
+        const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
 
-            db.all(
-                `SELECT ID, FirstName, LastName, Email
-                 FROM Person
-                 LIMIT ? OFFSET ?`,
-                [pageSize, offset],
-                (err, rows) => {
-                    if (err) {
-                        return res.render("error", {
-                            message: "Database error.",
-                            backUrl: "/register"
-                        });
-                    }
+        if (page < 1 || page > totalPages) {
+            return res.render("error", {
+                message: "Page not found.",
+                backUrl: "/people"
+            });
+        }
 
-                    res.render("people", {
-                        people: rows,
-                        currentPage: page,
-                        totalPages
+        db.all(
+            `SELECT ID, FirstName, LastName, Email
+             FROM Person
+             LIMIT ? OFFSET ?`,
+            [pageSize, offset],
+            (err, rows) => {
+                if (err) {
+                    return res.render("error", {
+                        message: "Database error.",
+                        backUrl: "/register"
                     });
                 }
-            );
-        }
-    );
+
+                res.render("people", {
+                    people: rows,
+                    currentPage: page,
+                    totalPages
+                });
+            }
+        );
+    });
 });
+
 
 router.get("/people/:id", authenticate, authEmployee, (req, res) => {
     db.get(`

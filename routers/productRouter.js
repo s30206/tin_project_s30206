@@ -36,31 +36,42 @@ router.get("/products", authenticate, (req, res) => {
     const pageSize = 2;
     const offset = (page - 1) * pageSize;
 
-    db.all(
-        `SELECT COUNT(*) AS count FROM Product`,
-        (err, countRows) => {
-            if (err) return res.send("DB error");
+    db.all(`SELECT COUNT(*) AS count FROM Product`, (err, countRows) => {
+        if (err) return res.render("error", {
+            message: "Database error.",
+            backUrl: "/dashboard"
+        });
 
-            const totalItems = countRows[0].count;
-            const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+        const totalItems = countRows[0].count;
+        const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
 
-            db.all(
-                "SELECT ID, Name, Price FROM Product LIMIT ? OFFSET ?",
-                [pageSize, offset],
-                (err, rows) => {
-                    if (err) return res.send("DB error");
-
-                    res.render("products", {
-                        products: rows,
-                        currentPage: page,
-                        totalPages,
-                        user: req.session.user
-                    });
-                }
-            );
+        if (page < 1 || page > totalPages) {
+            return res.render("error", {
+                message: "Page not found.",
+                backUrl: "/products"
+            });
         }
-    );
+
+        db.all(
+            "SELECT ID, Name, Price FROM Product LIMIT ? OFFSET ?",
+            [pageSize, offset],
+            (err, rows) => {
+                if (err) return res.render("error", {
+                    message: "Database error.",
+                    backUrl: "/dashboard"
+                });
+
+                res.render("products", {
+                    products: rows,
+                    currentPage: page,
+                    totalPages,
+                    user: req.session.user
+                });
+            }
+        );
+    });
 });
+
 
 router.get("/products/:id", authenticate, (req, res) => {
     const productId = req.params.id;

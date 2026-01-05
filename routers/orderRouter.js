@@ -46,8 +46,8 @@ router.get("/orders", authenticate, (req, res) => {
                 SELECT P.ID
                 FROM Person P
                 JOIN Account A ON P.ID = A.Person_ID
-                WHERE A.ID = ?
-                `, [user.id],
+                WHERE A.ID = ?`,
+        [user.id],
         (err, row) => {
             if (err || !row) {
                 return res.render("error", {
@@ -65,11 +65,8 @@ router.get("/orders", authenticate, (req, res) => {
             }
 
             db.get(
-                `
-                    SELECT COUNT(*) AS count
-                    FROM "Order" o
-                    ${where}
-                `, params,
+                `SELECT COUNT(*) AS count FROM "Order" o ${where}`,
+                params,
                 (err2, countRow) => {
                     if (err2) {
                         return res.render("error", {
@@ -81,13 +78,20 @@ router.get("/orders", authenticate, (req, res) => {
                     const totalItems = countRow.count;
                     const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
 
+                    if (page < 1 || page > totalPages) {
+                        return res.render("error", {
+                            message: "Page not found.",
+                            backUrl: "/orders"
+                        });
+                    }
+
                     db.all(
                         `
                             SELECT o.ID, o.Quantity, o.OrderAt,
-                            p.Name AS ProductName, p.Price
+                                   p.Name AS ProductName, p.Price
                             FROM "Order" o
-                            JOIN Product p ON p.ID = o.Product_ID
-                            ${where}
+                                     JOIN Product p ON p.ID = o.Product_ID
+                                ${where}
                             LIMIT ? OFFSET ?
                         `,
                         [...params, pageSize, offset],
@@ -112,6 +116,7 @@ router.get("/orders", authenticate, (req, res) => {
         }
     );
 });
+
 
 router.get("/orders/:id", authenticate, (req, res) => {
     const id = req.params.id;
