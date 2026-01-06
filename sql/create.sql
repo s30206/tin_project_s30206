@@ -44,6 +44,7 @@ CREATE TABLE "Order" (
                              ON DELETE CASCADE,
                          CONSTRAINT Order_Product FOREIGN KEY (Product_ID)
                              REFERENCES Product (ID)
+                             ON DELETE CASCADE
 );
 
 -- Table: Person

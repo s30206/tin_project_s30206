@@ -4,6 +4,11 @@
     <title>Product Details</title>
     <link rel="stylesheet" href="/style.css" type="text/css">
     <script src="/orderValidation.js" async></script>
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this product?");
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -17,6 +22,10 @@
     <% if (user && user.role === "employee") { %>
         <form method="GET" action="/products/<%= product.ID %>/edit">
             <button type="submit">Edit product</button>
+        </form>
+
+        <form method="POST" action="/products/<%= product.ID %>/delete" onsubmit="return confirmDelete()">
+            <button class="deleteButton" type="submit">Delete product</button>
         </form>
     <% } %>
 

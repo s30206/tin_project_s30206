@@ -18,7 +18,6 @@ router.post("/products/new", authenticate, authEmployee, productValidation, (req
             `, [name.trim(), description.trim(), Number(price)],
         function (err) {
             if (err) {
-                console.error(err);
                 return res.render("error", {
                     message: "Database error while adding product.",
                     backUrl: "/products/new"
@@ -132,7 +131,6 @@ router.post(
             [name.trim(), description.trim(), Number(price), productId],
             function (err) {
                 if (err) {
-                    console.error(err);
                     return res.render("error", {
                         message: "Database error while updating product.",
                         backUrl: `/products/${productId}`
@@ -144,5 +142,37 @@ router.post(
         );
     }
 );
+
+router.post(
+    "/products/:id/delete",
+    authenticate,
+    authEmployee,
+    (req, res) => {
+        const productId = req.params.id;
+
+        db.run(
+            `DELETE FROM Product WHERE ID = ?`,
+            [productId],
+            function (err) {
+                if (err) {
+                    return res.render("error", {
+                        message: "Database error while deleting product.",
+                        backUrl: `/products/${productId}`
+                    });
+                }
+
+                if (this.changes === 0) {
+                    return res.render("error", {
+                        message: "Product not found.",
+                        backUrl: "/products"
+                    });
+                }
+
+                res.redirect("/products");
+            }
+        );
+    }
+);
+
 
 module.exports = router;
