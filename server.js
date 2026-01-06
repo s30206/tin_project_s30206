@@ -1,4 +1,6 @@
-﻿const express = require("express");
+﻿require("dotenv").config({quiet: true});
+
+const express = require("express");
 const session = require("express-session");
 const path = require("path");
 
@@ -19,7 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(session({
-    secret: "r7MrXXLW9@B1EpZP-v6#=_X&[.+{Q]M45knhq-G]-y6g}h39qY",
+    secret: process.env.SESSION_SECRET || "secret",
     saveUninitialized: false,
     resave: false,
     cookie: {
