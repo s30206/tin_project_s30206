@@ -235,4 +235,56 @@ router.post("/orders/:id/edit", authenticate, orderValidation, (req, res) => {
     );
 });
 
+router.post("/orders/:id/delete", authenticate, (req, res) => {
+    const id = req.params.id;
+
+    db.get(`SELECT * FROM "Order" WHERE ID = ?`, [id], (err, order) => {
+        if (err) {
+            return res.render("error", {
+                message: "Database error while loading order.",
+                backUrl: "/orders"
+            });
+        }
+
+        if (!order) {
+            return res.render("error", {
+                message: "Order not found.",
+                backUrl: "/orders"
+            });
+        }
+
+        const userId = req.session.user.id;
+
+        db.get(`SELECT Person_ID AS 'ID' FROM Account WHERE ID = ?`, [userId],
+            (err2, row) => {
+                if (err2) {
+                    return res.render("error", {
+                        message: "Database error.",
+                        backUrl: `/orders/${id}`
+                    });
+                }
+
+                if (req.session.user.role === "customer" &&
+                    order.Person_ID !== row.ID) {
+                    return res.render("error", {
+                        message: "You are not allowed to delete this order.",
+                        backUrl: `/orders/${id}`
+                    });
+                }
+
+                db.run(`DELETE FROM "Order" WHERE ID = ?`, [id], err3 => {
+                    if (err3) {
+                        return res.render("error", {
+                            message: "Database error while deleting order.",
+                            backUrl: `/orders/${id}`
+                        });
+                    }
+
+                    res.redirect("/orders");
+                });
+            });
+    });
+});
+
+
 module.exports = router;

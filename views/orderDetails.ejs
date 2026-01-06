@@ -3,6 +3,12 @@
 <head>
     <title>Order Details</title>
     <link rel="stylesheet" href="/style.css" type="text/css">
+
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this order?");
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -23,6 +29,10 @@
             <input type="number" name="quantity" min="1" value="<%= order.Quantity %>">
 
             <button type="submit">Update</button>
+        </form>
+
+        <form method="POST" action="/orders/<%= order.ID %>/delete" onsubmit="return confirmDelete()">
+            <button class="deleteButton" type="submit">Delete order</button>
         </form>
     <% } %>
 
