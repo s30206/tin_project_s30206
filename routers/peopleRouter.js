@@ -81,4 +81,35 @@ router.get("/people/:id", authenticate, authEmployee, (req, res) => {
     );
 });
 
+router.post("/people/:id/delete", authenticate, authEmployee, (req, res) => {
+    const id = req.params.id;
+
+    db.get(`SELECT * FROM Person WHERE ID = ?`, [id], (err, row) => {
+        if (err) {
+            return res.render("error", {
+                message: "Database error while loading person.",
+                backUrl: "/people"
+            });
+        }
+
+        if (!row) {
+            return res.render("error", {
+                message: "Person not found.",
+                backUrl: "/people"
+            });
+        }
+
+        db.run(`DELETE FROM Person WHERE ID = ?`, [id], err2 => {
+            if (err2) {
+                return res.render("error", {
+                    message: "Database error while deleting person.",
+                    backUrl: `/people/${id}`
+                });
+            }
+
+            res.redirect("/people");
+        });
+    });
+});
+
 module.exports = router;

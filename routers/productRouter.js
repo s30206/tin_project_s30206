@@ -143,36 +143,44 @@ router.post(
     }
 );
 
-router.post(
-    "/products/:id/delete",
-    authenticate,
-    authEmployee,
-    (req, res) => {
-        const productId = req.params.id;
+router.post("/products/:id/delete", authenticate, authEmployee, (req, res) => {
+    const productId = req.params.id;
 
-        db.run(
-            `DELETE FROM Product WHERE ID = ?`,
-            [productId],
-            function (err) {
-                if (err) {
-                    return res.render("error", {
-                        message: "Database error while deleting product.",
-                        backUrl: `/products/${productId}`
-                    });
-                }
+    db.get(
+        `SELECT * FROM Product WHERE ID = ?`,
+        [productId],
+        (err, product) => {
 
-                if (this.changes === 0) {
-                    return res.render("error", {
-                        message: "Product not found.",
-                        backUrl: "/products"
-                    });
-                }
-
-                res.redirect("/products");
+            if (err) {
+                return res.render("error", {
+                    message: "Database error while loading product.",
+                    backUrl: "/products"
+                });
             }
-        );
-    }
-);
 
+            if (!product) {
+                return res.render("error", {
+                    message: "Product not found.",
+                    backUrl: "/products"
+                });
+            }
+
+            db.run(
+                `DELETE FROM Product WHERE ID = ?`,
+                [productId],
+                err2 => {
+                    if (err2) {
+                        return res.render("error", {
+                            message: "Database error while deleting product.",
+                            backUrl: `/products/${productId}`
+                        });
+                    }
+
+                    res.redirect("/products");
+                }
+            );
+        }
+    );
+});
 
 module.exports = router;

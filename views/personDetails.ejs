@@ -3,17 +3,29 @@
 <head>
     <title>Person Details</title>
     <link rel="stylesheet" href="/style.css" type="text/css">
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this person?");
+        }
+    </script>
 </head>
 <body>
 <div class="container">
     <h2>Person Details</h2>
 
+    <p><strong>ID:</strong> <%= person.ID %></p>
     <p><strong>Name:</strong> <%= person.FirstName %> <%= person.LastName %></p>
     <p><strong>Email:</strong> <%= person.Email %></p>
     <p><strong>Phone:</strong> <%= person.Phone %></p>
 
     <p><strong>Username:</strong> <%= person.Username %></p>
     <p><strong>Role:</strong> <%= person.Role %></p>
+
+    <form method="POST"
+          action="/people/<%= person.ID %>/delete"
+          onsubmit="return confirmDelete()">
+        <button class="deleteButton" type="submit">Delete person</button>
+    </form>
 
     <a href="/people">Back</a>
 </div>
