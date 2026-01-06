@@ -42,6 +42,9 @@ button:hover {
 .deleteButton {
     background-color: #e30000;
 }
+.deleteButton:hover {
+    background-color: #b10000;
+}
 
 .pagination {
     text-align: center;

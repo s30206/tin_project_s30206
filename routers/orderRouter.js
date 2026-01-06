@@ -166,8 +166,8 @@ router.get("/orders/:id", authenticate, (req, res) => {
                             backUrl: "/orders"
                         });
                     }
+                    res.render("orderDetails", { order, user: req.session.user });
                 });
-            res.render("orderDetails", { order, user: req.session.user });
         }
     );
 });
@@ -214,23 +214,22 @@ router.post("/orders/:id/edit", authenticate, orderValidation, (req, res) => {
                         });
                     }
 
+                    db.run(`
+                                UPDATE "Order"
+                                SET Quantity = ?
+                                WHERE ID = ?`,
+                        [Number(quantity), id],
+                        err2 => {
+                            if (err2) {
+                                return res.render("error", {
+                                    message: "Database error while updating order.",
+                                    backUrl: `/orders/${id}`
+                                });
+                            }
+                            res.redirect(`/orders/${id}`);
+                        }
+                    );
                 });
-
-            db.run(
-                `UPDATE "Order"
-                 SET Quantity = ?
-                 WHERE ID = ?`,
-                [Number(quantity), id],
-                err2 => {
-                    if (err2) {
-                        return res.render("error", {
-                            message: "Database error while updating order.",
-                            backUrl: `/orders/${id}`
-                        });
-                    }
-                    res.redirect(`/orders/${id}`);
-                }
-            );
         }
     );
 });
